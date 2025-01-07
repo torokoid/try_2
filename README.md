@@ -24,11 +24,11 @@
         <?php } ?>
     </div>
 
-<script>
+
     <!-- Firebase関連のJSコード -->
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
-
+<script>
 const firebaseConfig = {
     apiKey: "AIzaSyAI6PagpO-f8VC1yr3hNadU0Us7YLVM8o8",
     authDomain: "iine-76635.firebaseapp.com",
