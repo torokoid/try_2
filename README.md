@@ -24,47 +24,50 @@
         <?php } ?>
     </div>
 
-
     <!-- Firebase関連のJSコード -->
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyAI6PagpO-f8VC1yr3hNadU0Us7YLVM8o8",
-    authDomain: "iine-76635.firebaseapp.com",
-    databaseURL: "https://iine-76635.firebaseio.com",
-    projectId: "iine-76635",
-    storageBucket: "iine-76635.firebasestorage.app",
-    messagingSenderId: "547516244877",
-    appId: "1:547516244877:web:da260d23f79b78d90e53c4"
-};
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+        // Firebaseの設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAI6PagpO-f8VC1yr3hNadU0Us7YLVM8o8",
+            authDomain: "iine-76635.firebaseapp.com",
+            databaseURL: "https://iine-76635.firebaseio.com",
+            projectId: "iine-76635",
+            storageBucket: "iine-76635.firebasestorage.app",
+            messagingSenderId: "547516244877",
+            appId: "1:547516244877:web:da260d23f79b78d90e53c4"
+        };
 
-document.addEventListener('DOMContentLoaded', () => {
-    const likeButtons = document.querySelectorAll('.like-button');
-    const counts = document.querySelectorAll('.like-count');
+        // Firebase初期化
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-    const likesRef = ref(database, 'likes');
+        document.addEventListener('DOMContentLoaded', () => {
+            const likeButtons = document.querySelectorAll('.like-button');
+            const counts = document.querySelectorAll('.like-count');
 
-    // 初期データを取得して反映
-    onValue(likesRef, (snapshot) => {
-        const data = snapshot.val() || [];
-        likeButtons.forEach((button, index) => {
-            counts[index].textContent = data[index] || 0;
+            const likesRef = ref(database, 'likes');
 
-            // ボタンクリック時にカウントを更新
-            button.addEventListener('click', () => {
-                runTransaction(ref(database, `likes/${index}`), (current) => {
-                    return (current || 0) + 1;
+            // 初期データを取得して反映
+            onValue(likesRef, (snapshot) => {
+                const data = snapshot.val() || [];
+                likeButtons.forEach((button, index) => {
+                    counts[index].textContent = data[index] || 0;
+
+                    // ボタンクリック時にカウントを更新
+                    button.addEventListener('click', () => {
+                        runTransaction(ref(database, `likes/${index}`), (current) => {
+                            return (current || 0) + 1;
+                        });
+                    });
                 });
             });
         });
-    });
-});
     </script>
 </body>
 </html>
+
 
 
