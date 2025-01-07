@@ -44,43 +44,35 @@
         const database = firebase.database();
 
         document.addEventListener('DOMContentLoaded', () => {
-            const likeButtons = document.querySelectorAll('.like-button');
-            const counts = document.querySelectorAll('.like-count');
+            fetch('/firebase.js')
+                .then(response => response.json())
+                .then(data => {
+                    const counts = document.querySelectorAll('.like-count');
+                    const likeButtons = document.querySelectorAll('.like-button');
 
-            let initialCount;
+                    likeButtons.forEach((button, index) => {
+                        button.addEventListener('click', () => {
+                            const countSpan = counts[index];
+                            let currentCount = parseInt(countSpan.textContent, 10) || 0;
+                            currentCount++;
 
-            database.ref('likes').once('value', (snapshot) => {
-                if(snapshot.exists()){
-                    initialCount = snapshot.val();
-                }
-            }).then((snapshot) => {
-                const data = snapshot.val() || [];
-                likeButtons.forEach((button, index) => {
-                    counts[index].textContent = data[index] || 0;
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+                            // カウントを画面に反映
+                            countSpan.textContent = currentCount;
 
-            // ボタンクリック時にカウントを更新
-            likeButtons.forEach((button, index) => {
-                button.addEventListener('click', () => {
-                    const countSpan = counts[index];
-                    let currentCount = parseInt(countSpan.textContent, 10) || 0;
-                    currentCount++;
-
-                    // カウントを画面に反映
-                    countSpan.textContent = currentCount;
-
-                    // Firebaseにカウントを保存
-                    database.ref(`likes/${index}`).transaction((current) => {
-                        return (current || 0) + 1;
+                            // Firebaseにカウントを保存
+                            database.ref(`likes/${index}`).transaction((current) => {
+                                return (current || 0) + 1;
+                            });
+                        });
                     });
-                });
-            });
 
+                    counts.forEach((count, index) => {
+                        count.textContent = data[index] || 0;
+                    });
+                })
+                .catch(error => console.error(error));
         });
     </script>
 </body>
 </html>
+
