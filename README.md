@@ -47,6 +47,22 @@
             const likeButtons = document.querySelectorAll('.like-button');
             const counts = document.querySelectorAll('.like-count');
 
+            let initialCount;
+
+            database.ref('likes').once('value', (snapshot) => {
+                if(snapshot.exists()){
+                    initialCount = snapshot.val();
+                }
+            }).then((snapshot) => {
+                const data = snapshot.val() || [];
+                likeButtons.forEach((button, index) => {
+                    counts[index].textContent = data[index] || 0;
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
             // ボタンクリック時にカウントを更新
             likeButtons.forEach((button, index) => {
                 button.addEventListener('click', () => {
@@ -58,22 +74,9 @@
                     countSpan.textContent = currentCount;
 
                     // Firebaseにカウントを保存
-                    const countRef = database.ref(`likes/${index}`);
-                    countRef.transaction((current) => {
+                    database.ref(`likes/${index}`).transaction((current) => {
                         return (current || 0) + 1;
                     });
-                });
-            });
-
-            //初期カウント取得
-            let initialCount;
-            database.ref('likes').once('value', (snapshot) => {
-                const data = snapshot.val() || [];
-                data.forEach((count, index) => {
-                    if (counts[index]) {
-                        counts[index].textContent = count;
-                        initialCount = count;
-                    }
                 });
             });
 
