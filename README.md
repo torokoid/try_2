@@ -35,7 +35,7 @@
     <h1>「いいね」ボタンのサンプル</h1>
     <button class="like-button" id="likeButton">いいね</button>
     <div class="like-count" id="likeCount">いいね数: 0</div>
-
+<!--
     <script>
         let likeCount = 0;
 
@@ -47,7 +47,7 @@
             likeCountDisplay.textContent = `いいね数: ${likeCount}`;
         });
     </script>
-
+-->
     <script>
         const likeButton = document.getElementById('likeButton');
         const likeCountDisplay = document.getElementById('likeCount');
