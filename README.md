@@ -49,28 +49,12 @@
     </script>
 
     <script>
-    const likeButton = document.getElementById('likeButton');
-    const likeCountDisplay = document.getElementById('likeCount');
-    const apiUrl = 'https://torokoid.github.io/try_2/likes';
+        const likeButton = document.getElementById('likeButton');
+        const likeCountDisplay = document.getElementById('likeCount');
+        const apiUrl = 'http://localhost:3000/likes';
 
-    // ページ読み込み時に「いいね数」を取得
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            likeCountDisplay.textContent = `いいね数: ${data.count}`;
-        })
-        .catch(error => {
-            console.error('エラー:', error);
-        });
-
-    // ボタンをクリックしたら「いいね数」を更新
-    likeButton.addEventListener('click', () => {
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
+        // ページ読み込み時に「いいね数」を取得
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 likeCountDisplay.textContent = `いいね数: ${data.count}`;
@@ -78,8 +62,24 @@
             .catch(error => {
                 console.error('エラー:', error);
             });
-    });
-</script>
+
+        // ボタンをクリックしたら「いいね数」を更新
+        likeButton.addEventListener('click', () => {
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    likeCountDisplay.textContent = `いいね数: ${data.count}`;
+                })
+                .catch(error => {
+                    console.error('エラー:', error);
+                });
+        });
+    </script>
 
 </body>
 </html>
