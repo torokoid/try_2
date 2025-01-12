@@ -1,73 +1,55 @@
 # try_2
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>いいね機能</title>
+    <title>いいねボタン</title>
     <style>
-        .like-item {
-            margin-bottom: 10px;
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .like-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .like-button:hover {
+            background-color: #0056b3;
+        }
+        .like-count {
+            margin-top: 10px;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <div class="like-container">
-        <!-- 10個のいいねボタン -->
-        <?php for ($i = 0; $i < 10; $i++) { ?>
-        <div class="like-item">
-            <button class="like-button" data-index="<?php echo $i; ?>">いいね</button>
-            <span class="like-count">0</span>
-        </div>
-        <?php } ?>
-    </div>
+    <h1>「いいね」ボタンのサンプル</h1>
+    <button class="like-button" id="likeButton">いいね</button>
+    <div class="like-count" id="likeCount">いいね数: 0</div>
 
-    <!-- Firebase関連のJSコード -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    <script>
+        let likeCount = 0;
 
-        // Firebaseの設定
-        const firebaseConfig = {
-            apiKey: "AIzaSyAI6PagpO-f8VC1yr3hNadU0Us7YLVM8o8",
-            authDomain: "iine-76635.firebaseapp.com",
-            databaseURL: "https://iine-76635.firebaseio.com",
-            projectId: "iine-76635",
-            storageBucket: "iine-76635.firebasestorage.app",
-            messagingSenderId: "547516244877",
-            appId: "1:547516244877:web:da260d23f79b78d90e53c4"
-        };
+        const likeButton = document.getElementById('likeButton');
+        const likeCountDisplay = document.getElementById('likeCount');
 
-        // Firebase初期化
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const likeButtons = document.querySelectorAll('.like-button');
-            const counts = document.querySelectorAll('.like-count');
-
-            const likesRef = ref(database, 'likes');
-
-            // 初期データを取得して反映
-            onValue(likesRef, (snapshot) => {
-                const data = snapshot.val() || [];
-                likeButtons.forEach((button, index) => {
-                    counts[index].textContent = data[index] || 0;
-
-                    // ボタンクリック時にカウントを更新
-                    button.addEventListener('click', () => {
-                        runTransaction(ref(database, `likes/${index}`), (current) => {
-                            return (current || 0) + 1;
-                        });
-                    });
-                });
-            });
+        likeButton.addEventListener('click', () => {
+            likeCount++;
+            likeCountDisplay.textContent = `いいね数: ${likeCount}`;
         });
     </script>
 </body>
 </html>
+
 
 
 
